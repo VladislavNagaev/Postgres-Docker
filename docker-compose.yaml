@@ -1,0 +1,36 @@
+---
+version: "3.8"
+
+
+services:
+
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    volumes:
+      - type: volume
+        source: postgres-volume
+        target: /var/lib/postgresql/data/
+      - type: bind
+        source: ./postgres.conf
+        target: /etc/postgresql/postgresql.conf
+    ports:
+      - target: 5432
+        published: 5432
+        mode: host
+    env_file:
+      - ./postgres.env
+    environment:
+      PGDATA: /var/lib/postgresql/data/
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: always
+
+
+volumes:
+  postgres-volume:
