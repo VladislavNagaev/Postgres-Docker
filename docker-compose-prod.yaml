@@ -18,10 +18,8 @@ services:
       - type: bind
         source: ${APPS_SETTINGS}/postgres/postgres.conf
         target: /etc/postgresql/postgresql.conf
-    ports:
-      - target: 5432
-        published: 5432
-        mode: host
+    expose:
+      - 5432
     env_file: 
       - ${APPS_ENV}/postgres.env
     environment:
@@ -34,9 +32,14 @@ services:
       start_period: 10s
     restart: always
 
-  
+
 networks:
   main-overlay-network:
+    name: main-overlay-network
     external: true
     driver: overlay
     attachable: true
+    ipam:
+      config:
+        - subnet: 172.25.0.0/16
+          gateway: 172.25.0.1

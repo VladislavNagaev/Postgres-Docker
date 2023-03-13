@@ -18,10 +18,8 @@ services:
       - type: bind
         source: ./postgres.conf
         target: /etc/postgresql/postgresql.conf
-    ports:
-      - target: 5432
-        published: 5432
-        mode: host
+    expose:
+      - 5432
     env_file:
       - ./postgres.env
     environment:
