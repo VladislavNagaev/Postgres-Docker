@@ -8,6 +8,8 @@ services:
     image: postgres:13
     container_name: postgres
     hostname: postgres
+    labels:
+      autoheal: 'true'
     networks: 
       - main-overlay-network
     command: postgres -c config_file=/etc/postgresql/postgresql.conf
