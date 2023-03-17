@@ -5,21 +5,20 @@ version: "3.8"
 services:
 
   postgres:
-    image: postgres:13
+    # image: postgres:13
+    build:
+      context: .
+      dockerfile: base.Dockerfile
     container_name: postgres
     hostname: postgres
     labels:
       autoheal: 'true'
     networks: 
       - main-network
-    command: postgres -c config_file=/etc/postgresql/postgresql.conf
     volumes:
       - type: volume
         source: postgres-volume
         target: /var/lib/postgresql/data/
-      - type: bind
-        source: ./postgres.conf
-        target: /etc/postgresql/postgresql.conf
     env_file:
       - ./postgres.env
     environment:
